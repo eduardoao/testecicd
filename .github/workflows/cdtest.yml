@@ -23,7 +23,8 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}    
-    - run: node --version
+    - run: | 
+        node --version
     - run: npm ci
     - run: npm run test
   
@@ -33,8 +34,7 @@ jobs:
     runs-on: ubuntu-20.04
     concurrency: deploy-to-test
     environment: test
-    steps:
-      - name: 'deploy in develop'
+    steps:    
       - uses: actions/checkout@v2
       - name: Use Node.js 10.x
         uses: actions/setup-node@v2
