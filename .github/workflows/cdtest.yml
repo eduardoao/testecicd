@@ -40,7 +40,8 @@ jobs:
         with:
           node-version: 16.x
       - run: docker build -t testecicd .
-      - run: echo "Deploy"
+      - run: echo "${{ env.PROJECT_NAME }}"
+
   
   deploy-production:
     needs: test-ci
