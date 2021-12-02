@@ -1,6 +1,6 @@
 # Changelog
 
-## [2021-12-01] version 1.0.0
+## [2021-12-01] version 1.0.1
 
 ### Added
 
@@ -8,3 +8,6 @@
 - tests example
 - dockerfiles and docker-compose
 - github actions CI/CD automation
+
+
+
