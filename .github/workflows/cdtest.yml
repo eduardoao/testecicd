@@ -45,6 +45,15 @@ jobs:
           echo "tenancy=${{secrets.OCI_TENANCY_OCID}}" >> ~/.oci/config
           echo "key_file=~/.oci/key.pem" >> ~/.oci/config
           echo "${{secrets.OCI_KEY_FILE}}" >> ~/.oci/key.pem
+      
+      - name: 'Install OCI CLI'
+        run: |
+          curl -L -O https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh
+          chmod +x install.sh
+          ./install.sh --accept-all-defaults
+          echo "::add-path::/home/runner/bin"
+          exec -l $SHELL
+          echo "Finished OCI CLI!"
 
       - uses: actions/checkout@v2
       - name: Use Node.js 10.x
@@ -52,7 +61,7 @@ jobs:
         with:
           node-version: 16.x
       - run: docker build -t testecicd .
-      - run: echo "${{ env.PROJECT_NAME }}"
+      - run: echo "${{ secret.PROJECT_NAME }}"
 
   
   deploy-production:
