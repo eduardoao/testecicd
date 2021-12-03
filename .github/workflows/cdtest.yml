@@ -47,7 +47,7 @@ jobs:
       
       - name: 'Check Existing Instance'
         run: |
-          echo "oci compute instance list -c ${secrets.VM_COMPARTMENT_OCID} " >> $GITHUB_ENV      
+          echo "oci compute instance list -c ${{secrets.VM_COMPARTMENT_OCID}} " >> $GITHUB_ENV      
         
       
       - uses: actions/checkout@v2
