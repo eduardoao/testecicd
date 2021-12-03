@@ -44,6 +44,8 @@ jobs:
           api_key: |
             ${{ secrets.OCI_API_KEY }}
           verbose: true
+          
+          -run: oci compute instance list
 
      
       
