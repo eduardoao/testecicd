@@ -34,18 +34,19 @@ jobs:
     concurrency: deploy-to-test
     environment: test
     steps:
-      - name: 'Write Config & Key Files OCI'
+      - name: 'Write Config & Key Files'
         run: |
-          mkdir ~/.oci
-          echo "[DEFAULT]" >> ~/.oci/config
-          echo "user=${{secrets.OCI_USER_OCID}}" >> ~/.oci/config
-          echo "fingerprint=${{secrets.OCI_FINGERPRINT}}" >> ~/.oci/config
-          echo "pass_phrase=${{secrets.OCI_PASSPHRASE}}" >> ~/.oci/config
-          echo "region=${{secrets.OCI_REGION}}" >> ~/.oci/config
-          echo "tenancy=${{secrets.OCI_TENANCY_OCID}}" >> ~/.oci/config
-          echo "key_file=~/.oci/key.pem" >> ~/.oci/config
-          echo "${{secrets.OCI_KEY_FILE}}" >> ~/.oci/key.pem
-      
+            mkdir ~/.oci
+            echo "[DEFAULT]" >> ~/.oci/config
+            echo "user=${{secrets.OCI_USER_OCID}}" >> ~/.oci/config
+            echo "fingerprint=${{secrets.OCI_FINGERPRINT}}" >> ~/.oci/config
+            echo "pass_phrase=${{secrets.OCI_PASSPHRASE}}" >> ~/.oci/config
+            echo "region=${{secrets.OCI_REGION}}" >> ~/.oci/config
+            echo "tenancy=${{secrets.OCI_TENANCY_OCID}}" >> ~/.oci/config
+            echo "key_file=~/.oci/key.pem" >> ~/.oci/config
+            echo "${{secrets.OCI_KEY_FILE}}" >> ~/.oci/key.pem
+            echo "${{secrets.VM_SSH_PUB_KEY}}" >> /home/runner/.oci/id_vm.pub
+
       - name: 'Install OCI CLI'
         run: |
           curl -L -O https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh
@@ -53,27 +54,9 @@ jobs:
           ./install.sh --accept-all-defaults
           echo "::add-path::/home/runner/bin"
           exec -l $SHELL
+
       
-      - name: 'Testing OCI CLI'
-        run: |
-          oci iam availability-domain list
-
-      - name: 'Fix Config File Permissions'
-        run: |
-          oci setup repair-file-permissions --file /home/runner/.oci/config
-          oci setup repair-file-permissions --file /home/runner/.oci/key.pem
-
-      - name: 'Check Existing Instance'
-        run: |
-          ::set-env name=INSTANCE_OCID::$( \
-          oci compute instance list \
-          --lifecycle-state RUNNING \
-          --compartment-id ${{secrets.VM_COMPARTMENT_OCID}} \
-          --display-name cicd-demo \
-          --query "data [0].id" \
-          --raw-output \
-          )
-
+      
       - uses: actions/checkout@v2
       - name: Use Node.js 10.x
         uses: actions/setup-node@v2
