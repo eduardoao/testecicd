@@ -36,6 +36,8 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/setup-python@v2.2.1
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
       - name: 'Write Config & Key Files'
         run: |
