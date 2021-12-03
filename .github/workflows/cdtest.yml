@@ -46,18 +46,10 @@ jobs:
           verbose: true
       
       - name: 'Check Existing Instance'
-        env:
-          INSTANCE_OCID: oci compute instance list \
-                        --lifecycle-state RUNNING \
-                        --compartment-id ${{secrets.VM_COMPARTMENT_OCID}} \
-                        --display-name cicd-demo \
-                        --query "data [0].id" \
-                        --raw-output
-        run: |
-          echo "Instancia: ${{ env.INSTANCE_OCID }}"
+        run: |          
+          echo "::set-output name=INSTANCE_OCID::$(oci compute instance list --lifecycle-state RUNNING --compartment-id ${{secrets.VM_COMPARTMENT_OCID}} --display-name instance-front-iqfome --query "data [0].id" --raw-output)"
           
-   
-     
+        
       
       - uses: actions/checkout@v2
       - name: Use Node.js 10.x
