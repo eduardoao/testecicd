@@ -60,6 +60,7 @@ jobs:
           verbose: true  
         
       - name: Testing OCI CLI
+        uses: bytesbay/oci-cli-action@v1.0.2
       - run: | 
              oci iam availability-domain list
 
