@@ -54,6 +54,10 @@ jobs:
           
           exec -l $SHELL
           echo "Finished OCI CLI!"
+      
+      - name: "Testing OCI CLI"
+        run: |
+          oci iam availability-domain list
 
       - name: 'Fix Config File Permissions'
         run: |
