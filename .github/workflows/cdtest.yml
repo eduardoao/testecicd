@@ -43,13 +43,11 @@ jobs:
           region: "${{ secrets.OCI_REGION }}"
           api_key: |
             ${{ secrets.OCI_API_KEY }}
-          verbose: true  
-        
-      - name: Testing OCI CLI
-        uses: bytesbay/oci-cli-action@v1.0.2
-      - run: | 
-             oci iam availability-domain list
+          verbose: true
+      - run: |
+            oci iam availability-domain list
 
+     
       
       - uses: actions/checkout@v2
       - name: Use Node.js 10.x
