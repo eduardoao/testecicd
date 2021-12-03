@@ -34,10 +34,6 @@ jobs:
     concurrency: deploy-to-test
     environment: test
     steps:
-      - name: 'Checkout'
-        uses: actions/setup-python@v2.2.1
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
       - name: 'Write Config & Key Files'
         run: |
@@ -52,15 +48,22 @@ jobs:
             echo "${{secrets.OCI_KEY_FILE}}" >> ~/.oci/key.pem
             echo "${{secrets.VM_SSH_PUB_KEY}}" >> /home/runner/.oci/id_vm.pub
 
-      - name: 'Install OCI CLI'
-        run: |
-          curl -L -O https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh
-          chmod +x install.sh
-          ./install.sh --accept-all-defaults
-          echo "::add-path::/home/runner/bin"
-          exec -l $SHELL
+      - name: Install oci-cli
+        uses: bytesbay/oci-cli-action@v1.0.2
+        with:
+          user: "${{ secrets.OCI_USER_OCID }}"
+          fingerprint: "${{ secrets.OCI_FINGERPRINT }}"
+          tenancy: "${{ secrets.OCI_TENANCY_OCID }}"
+          region: "${{ secrets.OCI_REGION }}"
+          api_key: |
+            ${{ secrets.OCI_API_KEY }}
+          verbose: true  
+        
+      - name: Testing OCI CLI
+        uses: bytesbay/oci-cli-action@v1.0.2
+      - run: | 
+             oci iam availability-domain list
 
-      
       
       - uses: actions/checkout@v2
       - name: Use Node.js 10.x
