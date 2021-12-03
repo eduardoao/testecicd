@@ -46,9 +46,15 @@ jobs:
           verbose: true
       
       - name: 'Check Existing Instance'
-        run: |          
-          echo ::set-output name=INSTANCE_OCID::$(oci compute instance list --lifecycle-state RUNNING --compartment-id ${{secrets.VM_COMPARTMENT_OCID}} --display-name instance-front-iqfome --query "data [0].id" --raw-output)
-          
+        run: |
+          echo "INSTANCE_OCID=$( \
+            oci compute instance list \
+            --lifecycle-state RUNNING \
+            --compartment-id ${{secrets.VM_COMPARTMENT_OCID}} \
+            --display-name cicd-demo \
+            --query "data [0].id" \
+            --raw-output \
+          )" >> $GITHUB_ENV      
         
       
       - uses: actions/checkout@v2
