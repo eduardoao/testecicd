@@ -68,7 +68,7 @@ jobs:
             --lifecycle-state RUNNING \
             --compartment-id ${{secrets.VM_COMPARTMENT_OCID}} \
             --display-name cicd-demo \
-            --query "data [0].id" \
+            --query 'data [0].id' \
             --raw-output \
           )" >> $GITHUB_ENV
           
