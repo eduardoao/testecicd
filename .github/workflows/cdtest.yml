@@ -72,6 +72,8 @@ jobs:
             --raw-output \
           )" >> $GITHUB_ENV
           
+          echo ${{env.INSTANCE_OCID}}
+          
       - uses: actions/checkout@v2
       - name: Use Node.js 10.x
         uses: actions/setup-node@v2
