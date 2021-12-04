@@ -72,16 +72,6 @@ jobs:
             --raw-output \
           )" >> $GITHUB_ENV
           
-          echo "${{env.INSTANCE_OCID}}"
-          
-      - uses: actions/checkout@v2
-      - name: Use Node.js 10.x
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16.x
-      - run: docker build -t testecicd .
-      - run: echo "Image docker creaded!"
-      
       - name: 'Create Instance'
         if: ${{!env.INSTANCE_OCID}}
         run: |
@@ -100,6 +90,16 @@ jobs:
               --query "data.id" \
               --raw-output \
           )" >> $GITHUB_ENV
+          
+          
+      - uses: actions/checkout@v2
+      - name: Use Node.js 10.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+      - run: docker build -t testecicd .
+      - run: echo "Image docker creaded!"
+         
 
   
   deploy-production:
